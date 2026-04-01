@@ -16,6 +16,7 @@ On details, please check below the link.
 mkdir -p ~/<your_workspace_name\>/src/physicai_arm
 cd ~/<your_workspace_name\>/src/physicai_arm
 git clone https://github.com/hanback-lab/PhysicAI-Arm-ROS
+chmod +x "launch/*.launch.py"
 cd ../../
 colcon build --symlink-install --packages-select PhysicAI-Arm-ROS
 ```
