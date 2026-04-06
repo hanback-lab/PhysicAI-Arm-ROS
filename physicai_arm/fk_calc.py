@@ -2,11 +2,12 @@ import xml.etree.ElementTree as ET
 
 import numpy as np
 import rclpy
-from geometry_msgs.msg import PointStamped
+from geometry_msgs.msg import PoseStamped
 from rclpy.node import Node
 from rclpy.qos import QoSDurabilityPolicy, QoSProfile, QoSReliabilityPolicy
 from sensor_msgs.msg import JointState
 from std_msgs.msg import Float64MultiArray, String
+from scipy.spatial.transform import Rotation
 
 
 def rx(a):
@@ -56,8 +57,7 @@ class PhysicAIArmFKNode(Node):
         q.reliability = QoSReliabilityPolicy.RELIABLE
         self.create_subscription(String, '/robot_description', self.urdf_cb, q)
         self.create_subscription(JointState, '/joint_states', self.js_cb, 50)
-        self.pub_p = self.create_publisher(PointStamped, '/ee_position', 50)
-        self.pub_T = self.create_publisher(Float64MultiArray, '/ee_matrix', 50)
+        self.pub = self.create_publisher(PoseStamped, '/ee_pose', 50)
 
     def urdf_cb(self, msg):
         root = ET.fromstring(msg.data)
@@ -106,16 +106,18 @@ class PhysicAIArmFKNode(Node):
         if not self.chain or not all(n in self.state for n in self.names):
             return
         T = self.fk()
-        p = PointStamped()
+        p = PoseStamped()
         p.header.stamp = self.get_clock().now().to_msg()
         p.header.frame_id = 'base_link'
-        p.point.x = float(T[0, 3])
-        p.point.y = float(T[1, 3])
-        p.point.z = float(T[2, 3])
-        m = Float64MultiArray()
-        m.data = T.reshape(-1).tolist()
-        self.pub_p.publish(p)
-        self.pub_T.publish(m)
+        p.pose.position.x = float(T[0, 3])
+        p.pose.position.y = float(T[1, 3])
+        p.pose.position.z = float(T[2, 3])
+        q = Rotation.from_matrix(T[:3,:3]).as_quat()
+        p.pose.orientation.x = q[0]
+        p.pose.orientation.y = q[1]
+        p.pose.orientation.z = q[2]
+        p.pose.orientation.w = q[3]
+        self.pub.publish(p)
 
 
 def main(args=None):

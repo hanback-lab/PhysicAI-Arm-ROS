@@ -114,7 +114,7 @@ class SO101IKPosePitchGripperFastNode(Node):
         self.declare_parameter('depth', 1)
         self.declare_parameter('quantize_to_servo_tick', True)
         self.declare_parameter('gripper_open_pos', 0.80)
-        self.declare_parameter('gripper_closed_pos', 0.30)
+        self.declare_parameter('gripper_closed_pos', 0.00)
         depth = int(self.get_parameter('depth').value)
         self.create_subscription(JointState, str(self.get_parameter('joint_topic').value), self.js_cb, depth)
         self.create_subscription(PoseStamped, str(self.get_parameter('target_topic').value), self.target_cb, depth)

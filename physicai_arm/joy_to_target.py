@@ -18,7 +18,7 @@ class JoyPosePitchGripperNode(Node):
         self.declare_parameter('deadzone', 0.05)
         self.declare_parameter('axis_x', 1)
         self.declare_parameter('axis_y', 0)
-        self.declare_parameter('axis_z', 2)
+        self.declare_parameter('axis_z', 7)
         self.declare_parameter('axis_pitch', 3)
         self.declare_parameter('speed_x', 0.075)
         self.declare_parameter('speed_y', 0.075)
