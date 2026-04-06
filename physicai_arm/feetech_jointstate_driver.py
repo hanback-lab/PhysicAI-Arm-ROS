@@ -155,9 +155,9 @@ class FeetechInterface:
                 raise RuntimeError(f"write_position failed for servo ids: {fails}")
 
 
-class FeetechJointStateDriverFast(Node):
+class FeetechDriverNode(Node):
     def __init__(self):
-        super().__init__("feetech_jointstate_driver_fast")
+        super().__init__("feetech_driver_node")
         self.declare_parameter("config_path", "joints.yaml")
         self.declare_parameter("simulate", False)
         self.declare_parameter("joint_targets_topic", "/joint_targets")
@@ -317,7 +317,7 @@ class FeetechJointStateDriverFast(Node):
 
 def main():
     rclpy.init()
-    node = FeetechJointStateDriverFast()
+    node = FeetechDriverNode()
     executor = MultiThreadedExecutor(num_threads=2)
     executor.add_node(node)
     try:

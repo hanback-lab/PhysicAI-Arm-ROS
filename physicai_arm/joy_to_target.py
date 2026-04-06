@@ -7,7 +7,7 @@ from sensor_msgs.msg import Joy
 from std_msgs.msg import Bool
 
 
-class JoyPosePitchGripperNode(Node):
+class JoyTransposeNode(Node):
     def __init__(self):
         super().__init__('joy_pose_pitch_gripper_node')
         self.declare_parameter('joy_topic', '/joy')
@@ -121,7 +121,7 @@ class JoyPosePitchGripperNode(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    node = JoyPosePitchGripperNode()
+    node = JoyTransposeNode()
     try:
         rclpy.spin(node)
     finally:

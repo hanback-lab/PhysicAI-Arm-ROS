@@ -85,9 +85,9 @@ def quat_pitch(msg):
     return math.asin(v)
 
 
-class SO101IKPosePitchGripperFastNode(Node):
+class PhysicAIArmIKNode(Node):
     def __init__(self):
-        super().__init__('so101_ik_pose_pitch_gripper_fast_node')
+        super().__init__('physicai_arm_ik_node')
         self.state = {}
         self.last_names = []
         self.q_meas = None
@@ -233,7 +233,7 @@ class SO101IKPosePitchGripperFastNode(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    node = SO101IKPosePitchGripperFastNode()
+    node = PhysicAIArmIKNode()
     try:
         rclpy.spin(node)
     finally:
