@@ -1,0 +1,214 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sdf version="1.9">
+  <world name="basic_world">
+    <physics name="default_physics" type="dart">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+      <dart>
+        <collision_detector>ode</collision_detector>
+        <solver>
+          <solver_type>dantzig</solver_type>
+        </solver>
+      </dart>
+    </physics>
+    <gravity>0 0 -9.81</gravity>
+    <light name="sun" type="directional">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1.0</diffuse>
+      <specular>0.2 0.2 0.2 1.0</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.6 0.6</size>
+            </plane>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.85</mu>
+                <mu2>0.85</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode>
+                <kp>6e4</kp>
+                <kd>1.0e3</kd>
+                <min_depth>0.0008</min_depth>
+                <max_vel>0.008</max_vel>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.6 0.6</size>
+            </plane>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+    <model name="object1">
+      <static>false</static>
+      <pose>-0.1 0.2 0.0075 0 0 0</pose>
+      <link name="body">
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.015</radius>
+              <length>0.015</length>
+            </cylinder>
+          </geometry>
+          <max_contacts>4</max_contacts>
+          <surface>
+            <friction>
+              <ode>
+                <mu>4.5</mu>
+                <mu2>4.5</mu2>
+                <slip1>0.0</slip1>
+                <slip2>0.0</slip2>
+              </ode>
+              <torsional>
+                <coefficient>0.25</coefficient>
+                <use_patch_radius>true</use_patch_radius>
+                <patch_radius>0.0075</patch_radius>
+                <ode>
+                  <slip>0.0</slip>
+                </ode>
+              </torsional>
+            </friction>
+            <contact>
+              <ode>
+                <kp>6e4</kp>
+                <kd>1.5e3</kd>
+                <min_depth>0.0008</min_depth>
+                <max_vel>0.008</max_vel>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.015</radius>
+              <length>0.015</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.682353 0 0.047059 1</ambient>
+            <diffuse>0.682353 0 0.047059 1</diffuse>
+            <specular>0 0 0 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+        <inertial>
+          <pose>0 0 0 0 0 0</pose>
+          <mass>0.015</mass>
+          <inertia>
+            <ixx>1.125e-6</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1.125e-6</iyy>
+            <iyz>0</iyz>
+            <izz>1.6875e-6</izz>
+          </inertia>
+        </inertial>
+        <velocity_decay>
+          <linear>0.05</linear>
+          <angular>0.30</angular>
+        </velocity_decay>
+      </link>
+    </model>
+    <model name="object2">
+      <static>false</static>
+      <pose>-0.05 0.1 0.0075 0 0 0</pose>
+      <link name="body">
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.015</radius>
+              <length>0.015</length>
+            </cylinder>
+          </geometry>
+          <max_contacts>4</max_contacts>
+          <surface>
+            <friction>
+              <ode>
+                <mu>4.5</mu>
+                <mu2>4.5</mu2>
+                <slip1>0.0</slip1>
+                <slip2>0.0</slip2>
+              </ode>
+              <torsional>
+                <coefficient>0.25</coefficient>
+                <use_patch_radius>true</use_patch_radius>
+                <patch_radius>0.0075</patch_radius>
+                <ode>
+                  <slip>0.0</slip>
+                </ode>
+              </torsional>
+            </friction>
+            <contact>
+              <ode>
+                <kp>6e4</kp>
+                <kd>1.5e3</kd>
+                <min_depth>0.0008</min_depth>
+                <max_vel>0.008</max_vel>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.015</radius>
+              <length>0.015</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.73 1 0.45 1</ambient>
+            <diffuse>0.73 1 0.45 1</diffuse>
+            <specular>0 0 0 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+        <inertial>
+          <pose>0 0 0 0 0 0</pose>
+          <mass>0.015</mass>
+          <inertia>
+            <ixx>1.125e-6</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1.125e-6</iyy>
+            <iyz>0</iyz>
+            <izz>1.6875e-6</izz>
+          </inertia>
+        </inertial>
+        <velocity_decay>
+          <linear>0.05</linear>
+          <angular>0.30</angular>
+        </velocity_decay>
+      </link>
+    </model>
+    <include>
+      <uri>model://physicai_arm_so101</uri>
+      <name>physicai_arm</name>
+      <pose>-0.25 0 0 0 0 0</pose>
+    </include>
+  </world>
+</sdf>
