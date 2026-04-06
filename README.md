@@ -90,3 +90,37 @@ Perform the following actions based on the specified axis of the joystick.
 - EE's x, y, z
 - EE's Pitch
 - Gripper Open/Close (Boolean)
+
+### Run Gazebo
+
+> [!Warning]
+> Topics regarding the start of the bring-up and companions exist above. Therefore, please terminate `bringup.launch.py` when running Gazebo.
+
+```sh
+ros2 launch physicai_arm sim_launch.launch.py world_sdf:=/home/soda/physicai_arm_ws/src/physicai_arm/world/ex_sim.sdf
+```
+
+Run the Gazebo simulation and automatically load the PhysicAI Arm robot model SDF file. However, a tag including `physicai_arm_so101` must exist within the package, such as in the `world/ex_sim.sdf` file format.
+
+Below is an example of robot model inclusion and placement.
+
+```xml
+    <include>
+      <uri>model://physicai_arm_so101</uri>
+      <name>physicai_arm</name>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+```
+
+The topic information for publishing and subscribing is as follows.
+
+| Topic | Pub/Sub | Message type | Description | 
+| --- | ------- | -------- | ---- |
+| /joint_states | Pub | `sensor_msgs/JointState` | Publish the manipulator joint angles placed on the simulation. |
+| /joint_targets | Sub | `sensor_msgs/JointState` | Specifies the joint angle status of the manipulator placed on the simulation. |
+| /sim/elbow_flex/cmd_pos | Sub | `std_msgs/Float64` | Specifies the joint angle state to the Ignition Gazebo JointPositionController placed on the elbow_flex joint. |
+| /sim/gripper/cmd_pos | Sub | `std_msgs/Float64` | Specifies the joint angle state to the Ignition Gazebo JointPositionController placed on the gripper joint. |
+| /sim/shoulder_lift/cmd_pos | Sub | `std_msgs/Float64` | Specifies the joint angle state to the Ignition Gazebo JointPositionController placed on the shoulder_lift joint. |
+| /sim/shoulder_pan/cmd_pos | Sub | `std_msgs/Float64` | Specifies the joint angle state to the Ignition Gazebo JointPositionController placed on the shoulder_pan joint. |
+| /sim/wrist_flex/cmd_pos | Sub | `std_msgs/Float64` | Specifies the joint angle state to the Ignition Gazebo JointPositionController placed on the wrist_flex joint. |
+| /sim/wrist_roll/cmd_pos | Sub | `std_msgs/Float64` | Specifies the joint angle state to the Ignition Gazebo JointPositionController placed on the wrist_roll joint. |
