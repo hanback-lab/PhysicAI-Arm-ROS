@@ -15,10 +15,10 @@ On details, please check below the link.
 ```sh
 mkdir -p ~/<your_workspace_name\>/src/physicai_arm
 cd ~/<your_workspace_name\>/src/physicai_arm
-git clone https://github.com/hanback-lab/PhysicAI-Arm-ROS
+git clone https://github.com/hanback-lab/PhysicAI-Arm-ROS physicai_arm
 chmod +x "launch/*.launch.py"
 cd ../../
-colcon build --symlink-install --packages-select PhysicAI-Arm-ROS
+colcon build --symlink-install --packages-select physicai_arm
 ```
 
 ## Usage
@@ -61,8 +61,7 @@ The topic information for publishing and subscribing is as follows.
 
 | Topic | Pub/Sub | Message type | Description | 
 | --- | ------- | -------- | ---- |
-| /ee_position | Pub | `geometry_msgs/PoseStamped` | Publish the position and azimuth (Quternion) values ​​of EE. |
-| /ee_matrix | Pub | `geometry_msgs/Float64MultiArray` | Publish the rotation matrix value of EE. |
+| /ee_pose | Pub | `geometry_msgs/PoseStamped` | Publish the position and azimuth (Quternion) values ​​of EE. |
 
 ### IK Calculate
 
