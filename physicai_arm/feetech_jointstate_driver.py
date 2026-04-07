@@ -194,21 +194,27 @@ class FeetechDriverNode(Node):
         self._state_lock = threading.Lock()
         self._io_lock = threading.Lock()
         self._torque_requested = True
-        self._torque_enabled = True
+        self._torque_enabled = False
         self._last_cmd_time = self.get_clock().now()
         self._last_write_wall = 0.0
 
         initial = [0.0 for _ in self.cfg.joint_names]
+        current = [0.0 for _ in self.cfg.joint_names]
         try:
             with self._io_lock:
-                initial = self.iface.read_positions_rad()
+                current = self.iface.read_positions_rad()
         except Exception as e:
             self.get_logger().warn(f"initial read_positions_rad failed: {e}")
+            current = list(initial)
 
-        self._measured = list(initial)
-        self._cmded = list(initial)
+        self._measured = list(current)
+        self._cmded = list(current)
         self._target_map: Dict[str, float] = {jn: p for jn, p in zip(self.cfg.joint_names, initial)}
-        self._last_written_ticks = [self.iface.rad_to_tick(jn, p) for jn, p in zip(self.cfg.joint_names, initial)]
+        self._last_written_ticks = [self.iface.rad_to_tick(jn, p) for jn, p in zip(self.cfg.joint_names, current)]
+        self._startup_initial_pending = any(
+            abs(self.iface.rad_to_tick(jn, target) - self.iface.rad_to_tick(jn, cur)) >= self.command_threshold_ticks
+            for jn, target, cur in zip(self.cfg.joint_names, initial, current)
+        )
 
         qos1 = QoSProfile(depth=1)
         self.pub = self.create_publisher(JointState, self.joint_states_topic, 10)
@@ -236,11 +242,13 @@ class FeetechDriverNode(Node):
                 if n in self._target_map:
                     lo, hi = self.cfg.limit_rad[n]
                     self._target_map[n] = clamp(float(p), lo, hi)
+            self._startup_initial_pending = False
             self._last_cmd_time = self.get_clock().now()
 
     def _apply_torque_request(self) -> bool:
         with self._state_lock:
             requested = self._torque_requested
+            startup_initial_pending = self._startup_initial_pending
         if requested == self._torque_enabled:
             return self._torque_enabled
         with self._io_lock:
@@ -252,7 +260,8 @@ class FeetechDriverNode(Node):
             self.iface.write_positions_rad(hold, speed=self.write_speed, acceleration=self.write_acc)
             self._torque_enabled = True
             self._cmded = list(hold)
-            self._target_map = {jn: p for jn, p in zip(self.cfg.joint_names, hold)}
+            if not startup_initial_pending:
+                self._target_map = {jn: p for jn, p in zip(self.cfg.joint_names, hold)}
             self._last_written_ticks = [self.iface.rad_to_tick(jn, p) for jn, p in zip(self.cfg.joint_names, hold)]
             self._last_cmd_time = self.get_clock().now()
             self._last_write_wall = time.monotonic()
@@ -284,9 +293,16 @@ class FeetechDriverNode(Node):
 
         now_wall = time.monotonic()
         with self._state_lock:
+            startup_target_ticks = [self.iface.rad_to_tick(jn, self._target_map[jn]) for jn in self.cfg.joint_names]
+            measured_ticks = [self.iface.rad_to_tick(jn, p) for jn, p in zip(self.cfg.joint_names, self._measured)]
+            if self._startup_initial_pending and all(abs(a - b) < self.command_threshold_ticks for a, b in zip(startup_target_ticks, measured_ticks)):
+                self._startup_initial_pending = False
+
             dt_ms = (self.get_clock().now() - self._last_cmd_time).nanoseconds / 1e6
             timed_out = dt_ms > float(self.command_timeout_ms)
-            if timed_out and self.hold_last_target_on_timeout:
+            if self._startup_initial_pending:
+                desired = [self._target_map[jn] for jn in self.cfg.joint_names]
+            elif timed_out and self.hold_last_target_on_timeout:
                 desired = list(self._cmded)
             elif timed_out:
                 desired = list(self._measured)
