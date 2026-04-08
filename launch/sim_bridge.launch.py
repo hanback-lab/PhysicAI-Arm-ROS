@@ -12,7 +12,7 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description() -> LaunchDescription:
-    pkg_share = get_package_share_directory("physicai_arm_gz")
+    pkg_share = get_package_share_directory("physicai_arm")
     ros_gz_sim_share = get_package_share_directory("ros_gz_sim")
 
     world_arg = DeclareLaunchArgument(
