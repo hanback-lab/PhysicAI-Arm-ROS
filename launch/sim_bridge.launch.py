@@ -59,7 +59,7 @@ def generate_launch_description() -> LaunchDescription:
     )
 
     adapter = Node(
-        package="physicai_arm_gz",
+        package="physicai_arm",
         executable="joint_targets_to_cmd_pos",
         output="screen",
     )

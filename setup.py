@@ -48,7 +48,7 @@ setup(
             "ik_calc = physicai_arm.ik_calc:main",
             "simple_pose = physicai_arm.simple_pose_pub:main",
             "joy_to_target = physicai_arm.joy_to_target:main",
-            "joint_targets_to_cmd_pos = physicai_arm_gz.joint_targets_to_cmd_pos:main",
+            "joint_targets_to_cmd_pos = physicai_arm.joint_targets_to_cmd_pos:main",
         ],
     },
 )
