@@ -64,7 +64,7 @@ def generate_launch_description() -> LaunchDescription:
         output="screen",
     )
 
-    robot_description_path = os.path.join(pkg_share, "urdf", "so101_new_calib.urdf")
+    robot_description_path = os.path.join(pkg_share, "urdf", "physicai_arm.urdf")
     with open(robot_description_path, "r", encoding="utf-8") as f:
         robot_description = f.read()
 
