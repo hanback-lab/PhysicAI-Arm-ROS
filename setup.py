@@ -27,7 +27,7 @@ setup(
         ('share/' + package_name + '/config', only_files('config/*')),
         ('share/' + package_name + '/launch', only_files('launch/*.launch.py')),
         ('share/' + package_name + '/urdf', only_files('urdf/*')),
-        ('share/' + package_name | '/models/physicai_arm_so101', only_files('models/physicai_arm_so101/*')),
+        ('share/' + package_name + '/models/physicai_arm_so101', only_files('models/physicai_arm_so101/*')),
         *package_files("urdf/assets"),
         *package_files("models/physicai_arm_so101/assets/*")
     ],
