@@ -29,7 +29,7 @@ setup(
         ('share/' + package_name + '/urdf', only_files('urdf/*')),
         ('share/' + package_name + '/models/physicai_arm_so101', only_files('models/physicai_arm_so101/*')),
         *package_files("urdf/assets"),
-        *package_files("models/physicai_arm_so101/assets/*")
+        *package_files("models/physicai_arm_so101/assets")
     ],
     install_requires=['setuptools'],
     zip_safe=True,
