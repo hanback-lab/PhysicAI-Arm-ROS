@@ -97,7 +97,7 @@ Perform the following actions based on the specified axis of the joystick.
 > Topics regarding the start of the bring-up and companions exist above. Therefore, please terminate `bringup.launch.py` when running Gazebo.
 
 ```sh
-ros2 launch physicai_arm sim_launch.launch.py world_sdf:=/home/soda/physicai_arm_ws/src/physicai_arm/world/ex_sim.sdf
+ros2 launch physicai_arm sim_bridge.launch.py world_sdf:=/home/soda/physicai_arm_ws/src/physicai_arm/world/ex_sim.sdf
 ```
 
 Run the Gazebo simulation and automatically load the PhysicAI Arm robot model SDF file. However, a tag including `physicai_arm_so101` must exist within the package, such as in the `world/ex_sim.sdf` file format.
