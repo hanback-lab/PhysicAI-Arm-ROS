@@ -44,7 +44,9 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'feetech_driver = physicai_arm.feetech_jointstate_driver:main',
+            "feetech_follower_driver = physicai_arm.feetech_follower_driver:main",
+            "feetech_leader_driver = physicai_arm.feetech_leader_driver:main",
+            "teleoperation = physicai_arm.leader_to_follower_relay:main",
             "camera_node = physicai_arm.camera_node:main",
             "fk_calc = physicai_arm.fk_calc:main",
             "ik_calc = physicai_arm.ik_calc:main",

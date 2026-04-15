@@ -40,8 +40,19 @@ def generate_launch_description():
         
         Node(
             package='physicai_arm',
-            executable='feetech_driver',
-            name='feetech_driver',
+            executable='feetech_follower_driver',
+            name='feetech_follower_driver',
+            output='screen',
+            parameters=[
+                {'config_path': config_path_default},
+                {'simulate': simulate}
+            ]
+        ),
+        
+        Node(
+            package='physicai_arm',
+            executable='feetech_leader_driver',
+            name='feetech_leader_driver',
             output='screen',
             parameters=[
                 {'config_path': config_path_default},
